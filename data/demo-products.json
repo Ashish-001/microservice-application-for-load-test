@@ -1,0 +1,92 @@
+[
+  {
+    "name": "Samsung 85-inch QLED TV",
+    "description": "4K UHD Smart TV with Quantum HDR, Alexa Built-in",
+    "skuCode": "SAMSUNG-85QLED-4K",
+    "price": 2499.99
+  },
+  {
+    "name": "Apple Mac Studio",
+    "description": "M2 Ultra chip, 64GB RAM, 1TB SSD",
+    "skuCode": "MAC-STUDIO-M2-ULTRA",
+    "price": 3999.99
+  },
+  {
+    "name": "Microsoft Surface Laptop Studio 2",
+    "description": "14.4-inch touchscreen, Intel i7, 32GB RAM, 1TB SSD",
+    "skuCode": "SURFACE-LAPTOP-STUDIO-2",
+    "price": 2399.99
+  },
+  {
+    "name": "Sony WH-1000XM6",
+    "description": "Premium noise-cancelling headphones with 30-hour battery",
+    "skuCode": "SONY-WH1000XM6",
+    "price": 449.99
+  },
+  {
+    "name": "Nikon Z9",
+    "description": "45.7MP full-frame mirrorless camera, 8K video",
+    "skuCode": "NIKON-Z9",
+    "price": 5499.99
+  },
+  {
+    "name": "Peloton Bike+",
+    "description": "Interactive fitness bike with 24-inch rotating screen",
+    "skuCode": "PELOTON-BIKE-PLUS",
+    "price": 2495.00
+  },
+  {
+    "name": "KitchenAid Stand Mixer",
+    "description": "5-quart professional mixer, 10 speeds, multiple attachments",
+    "skuCode": "KITCHENAID-MIXER-5QT",
+    "price": 379.99
+  },
+  {
+    "name": "Tesla Powerwall 3",
+    "description": "13.5 kWh home battery storage system",
+    "skuCode": "TESLA-POWERWALL-3",
+    "price": 11500.00
+  },
+  {
+    "name": "Meta Quest Pro",
+    "description": "Advanced VR headset with eye and face tracking",
+    "skuCode": "META-QUEST-PRO",
+    "price": 999.99
+  },
+  {
+    "name": "LG 27-inch UltraFine 5K",
+    "description": "27-inch 5K Retina display, Thunderbolt 3",
+    "skuCode": "LG-ULTRAFINE-27-5K",
+    "price": 1299.99
+  },
+  {
+    "name": "Dyson Airwrap Complete",
+    "description": "Hair styling tool with 6 attachments",
+    "skuCode": "DYSON-AIRWRAP-COMPLETE",
+    "price": 599.99
+  },
+  {
+    "name": "Garmin Fenix 7X Pro",
+    "description": "Premium multisport GPS watch with solar charging",
+    "skuCode": "GARMIN-FENIX-7X-PRO",
+    "price": 899.99
+  },
+  {
+    "name": "Sonos Arc Soundbar",
+    "description": "Premium smart soundbar with Dolby Atmos",
+    "skuCode": "SONOS-ARC-SOUNDBAR",
+    "price": 899.99
+  },
+  {
+    "name": "Razer Blade 18",
+    "description": "18-inch gaming laptop, RTX 4090, 32GB RAM, 2TB SSD",
+    "skuCode": "RAZER-BLADE-18-RTX4090",
+    "price": 4299.99
+  },
+  {
+    "name": "Vitamix Professional 750",
+    "description": "Commercial-grade blender with 5 preset programs",
+    "skuCode": "VITAMIX-PRO-750",
+    "price": 549.99
+  }
+]

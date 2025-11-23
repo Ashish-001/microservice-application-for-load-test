@@ -1,0 +1,152 @@
+[
+  {
+    "skuCode": "SAMSUNG-85QLED-4K",
+    "price": 2499.99,
+    "quantity": 1,
+    "userDetails": {
+      "email": "alex.martinez@customer.com",
+      "firstName": "Alex",
+      "lastName": "Martinez"
+    }
+  },
+  {
+    "skuCode": "MAC-STUDIO-M2-ULTRA",
+    "price": 3999.99,
+    "quantity": 1,
+    "userDetails": {
+      "email": "sophia.chen@customer.com",
+      "firstName": "Sophia",
+      "lastName": "Chen"
+    }
+  },
+  {
+    "skuCode": "SURFACE-LAPTOP-STUDIO-2",
+    "price": 2399.99,
+    "quantity": 1,
+    "userDetails": {
+      "email": "marcus.johnson@customer.com",
+      "firstName": "Marcus",
+      "lastName": "Johnson"
+    }
+  },
+  {
+    "skuCode": "SONY-WH1000XM6",
+    "price": 449.99,
+    "quantity": 2,
+    "userDetails": {
+      "email": "olivia.brown@customer.com",
+      "firstName": "Olivia",
+      "lastName": "Brown"
+    }
+  },
+  {
+    "skuCode": "NIKON-Z9",
+    "price": 5499.99,
+    "quantity": 1,
+    "userDetails": {
+      "email": "ethan.davis@customer.com",
+      "firstName": "Ethan",
+      "lastName": "Davis"
+    }
+  },
+  {
+    "skuCode": "PELOTON-BIKE-PLUS",
+    "price": 2495.00,
+    "quantity": 1,
+    "userDetails": {
+      "email": "isabella.wilson@customer.com",
+      "firstName": "Isabella",
+      "lastName": "Wilson"
+    }
+  },
+  {
+    "skuCode": "KITCHENAID-MIXER-5QT",
+    "price": 379.99,
+    "quantity": 1,
+    "userDetails": {
+      "email": "noah.moore@customer.com",
+      "firstName": "Noah",
+      "lastName": "Moore"
+    }
+  },
+  {
+    "skuCode": "TESLA-POWERWALL-3",
+    "price": 11500.00,
+    "quantity": 1,
+    "userDetails": {
+      "email": "ava.taylor@customer.com",
+      "firstName": "Ava",
+      "lastName": "Taylor"
+    }
+  },
+  {
+    "skuCode": "META-QUEST-PRO",
+    "price": 999.99,
+    "quantity": 1,
+    "userDetails": {
+      "email": "lucas.anderson@customer.com",
+      "firstName": "Lucas",
+      "lastName": "Anderson"
+    }
+  },
+  {
+    "skuCode": "LG-ULTRAFINE-27-5K",
+    "price": 1299.99,
+    "quantity": 2,
+    "userDetails": {
+      "email": "mia.thomas@customer.com",
+      "firstName": "Mia",
+      "lastName": "Thomas"
+    }
+  },
+  {
+    "skuCode": "DYSON-AIRWRAP-COMPLETE",
+    "price": 599.99,
+    "quantity": 1,
+    "userDetails": {
+      "email": "henry.jackson@customer.com",
+      "firstName": "Henry",
+      "lastName": "Jackson"
+    }
+  },
+  {
+    "skuCode": "GARMIN-FENIX-7X-PRO",
+    "price": 899.99,
+    "quantity": 1,
+    "userDetails": {
+      "email": "charlotte.white@customer.com",
+      "firstName": "Charlotte",
+      "lastName": "White"
+    }
+  },
+  {
+    "skuCode": "SONOS-ARC-SOUNDBAR",
+    "price": 899.99,
+    "quantity": 1,
+    "userDetails": {
+      "email": "benjamin.harris@customer.com",
+      "firstName": "Benjamin",
+      "lastName": "Harris"
+    }
+  },
+  {
+    "skuCode": "RAZER-BLADE-18-RTX4090",
+    "price": 4299.99,
+    "quantity": 1,
+    "userDetails": {
+      "email": "amelia.martin@customer.com",
+      "firstName": "Amelia",
+      "lastName": "Martin"
+    }
+  },
+  {
+    "skuCode": "VITAMIX-PRO-750",
+    "price": 549.99,
+    "quantity": 1,
+    "userDetails": {
+      "email": "william.thompson@customer.com",
+      "firstName": "William",
+      "lastName": "Thompson"
+    }
+  }
+]
