@@ -1,6 +1,5 @@
 package com.his.project.loadtest;
 
-import com.his.project.loadtest.client.ApiClient;
 import com.his.project.loadtest.model.TestConfig;
 import com.his.project.loadtest.model.TestResult;
 import com.his.project.loadtest.service.LoadTestService;
@@ -14,10 +13,30 @@ public class LoadTestRunner {
         System.out.println("  Microservices Load Testing Tool");
         System.out.println("==========================================\n");
         
-        Scanner scanner = new Scanner(System.in);
+        TestConfig config;
         
-        // Get configuration
-        TestConfig config = getTestConfiguration(scanner);
+        // Check if command-line arguments are provided for non-interactive mode
+        if (args.length > 0) {
+            config = parseCommandLineArgs(args);
+            System.out.println("Running in non-interactive mode:");
+            if (config.getRequestsPerService() != null) {
+                System.out.println("  Requests per service endpoint: " + config.getRequestsPerService());
+                if (config.isTestProductService()) {
+                    System.out.println("  Product Service: GET " + config.getRequestsPerService() + " + POST " + config.getRequestsPerService() + " = " + (config.getRequestsPerService() * 2) + " total");
+                }
+                System.out.println("  Inventory Service: " + (config.isTestInventoryService() ? "GET " + config.getRequestsPerService() : "disabled"));
+                System.out.println("  Order Service: " + (config.isTestOrderService() ? "POST " + config.getRequestsPerService() : "disabled"));
+            } else {
+                System.out.println("  Total Requests: " + calculateTotalRequests(config));
+            }
+            System.out.println("  Threads: " + config.getThreads());
+            System.out.println("  Requests per thread: " + config.getRequestsPerThread());
+            System.out.println("  Delay: " + config.getDelayMs() + " ms");
+        } else {
+            Scanner scanner = new Scanner(System.in);
+            config = getTestConfiguration(scanner);
+            scanner.close();
+        }
         
         System.out.println("\nStarting load test...");
         System.out.println("Press Ctrl+C to stop early\n");
@@ -27,8 +46,106 @@ public class LoadTestRunner {
         
         // Print results
         printResults(result);
+    }
+    
+    private static TestConfig parseCommandLineArgs(String[] args) {
+        TestConfig config = new TestConfig();
         
-        scanner.close();
+        // Default: all services enabled
+        config.setTestProductService(true);
+        config.setTestOrderService(true);
+        config.setTestInventoryService(true);
+        
+        Integer totalRequestsTarget = null;
+        
+        // Parse arguments
+        for (int i = 0; i < args.length; i++) {
+            String arg = args[i];
+            switch (arg) {
+                case "--total-requests":
+                case "-t":
+                    if (i + 1 < args.length) {
+                        totalRequestsTarget = Integer.parseInt(args[++i]);
+                    }
+                    break;
+                case "--threads":
+                case "-n":
+                    if (i + 1 < args.length) {
+                        config.setThreads(Integer.parseInt(args[++i]));
+                    }
+                    break;
+                case "--requests-per-thread":
+                case "-r":
+                    if (i + 1 < args.length) {
+                        config.setRequestsPerThread(Integer.parseInt(args[++i]));
+                    }
+                    break;
+                case "--delay":
+                case "-d":
+                    if (i + 1 < args.length) {
+                        config.setDelayMs(Long.parseLong(args[++i]));
+                    }
+                    break;
+                case "--url":
+                case "-u":
+                    if (i + 1 < args.length) {
+                        config.setGatewayBaseUrl(args[++i]);
+                    }
+                    break;
+                case "--no-product":
+                    config.setTestProductService(false);
+                    break;
+                case "--no-order":
+                    config.setTestOrderService(false);
+                    break;
+                case "--no-inventory":
+                    config.setTestInventoryService(false);
+                    break;
+                case "--requests-per-service":
+                case "-s":
+                    if (i + 1 < args.length) {
+                        config.setRequestsPerService(Integer.parseInt(args[++i]));
+                    }
+                    break;
+            }
+        }
+        
+        // Calculate requests per thread if requests per service was specified
+        if (config.getRequestsPerService() != null) {
+            // Each endpoint gets the full amount: Product GET (10k), Product POST (10k), Inventory GET (10k), Order POST (10k)
+            // So we need enough iterations to cover all endpoints
+            int maxRequestsPerService = config.getRequestsPerService();
+            int maxIterations = maxRequestsPerService; // Each endpoint needs this many iterations
+            
+            if (maxIterations > 0) {
+                int threads = config.getThreads();
+                // Add some buffer to ensure we reach all targets
+                config.setRequestsPerThread((int) Math.ceil((double) maxIterations / threads) + 100);
+            }
+        } else if (totalRequestsTarget != null) {
+            // Original logic for total requests
+            int endpointsPerIteration = 0;
+            if (config.isTestProductService()) endpointsPerIteration += 2; // GET + POST
+            if (config.isTestInventoryService()) endpointsPerIteration += 1; // GET
+            if (config.isTestOrderService()) endpointsPerIteration += 1; // POST
+            
+            if (endpointsPerIteration > 0) {
+                int iterationsNeeded = (int) Math.ceil((double) totalRequestsTarget / endpointsPerIteration);
+                int threads = config.getThreads();
+                config.setRequestsPerThread((int) Math.ceil((double) iterationsNeeded / threads));
+            }
+        }
+        
+        return config;
+    }
+    
+    private static int calculateTotalRequests(TestConfig config) {
+        int endpointsPerIteration = 0;
+        if (config.isTestProductService()) endpointsPerIteration += 2; // GET + POST
+        if (config.isTestInventoryService()) endpointsPerIteration += 1; // GET
+        if (config.isTestOrderService()) endpointsPerIteration += 1; // POST
+        
+        return config.getThreads() * config.getRequestsPerThread() * endpointsPerIteration;
     }
     
     private static TestConfig getTestConfiguration(Scanner scanner) {
@@ -37,9 +154,9 @@ public class LoadTestRunner {
         System.out.println("Configuration:");
         System.out.println("--------------");
         
-        System.out.print("API Gateway Base URL [http://localhost:9000]: ");
+        System.out.print("API Gateway Base URL [http://35.198.90.238:9000]: ");
         String gatewayUrl = scanner.nextLine().trim();
-        config.setGatewayBaseUrl(gatewayUrl.isEmpty() ? "http://localhost:9000" : gatewayUrl);
+        config.setGatewayBaseUrl(gatewayUrl.isEmpty() ? "http://35.198.90.238:9000" : gatewayUrl);
         
         System.out.print("Number of threads (concurrent users) [10]: ");
         String threadsStr = scanner.nextLine().trim();

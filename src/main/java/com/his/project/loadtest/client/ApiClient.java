@@ -20,7 +20,8 @@ public class ApiClient {
     private final Random random;
     
     public ApiClient(String baseUrl) {
-        this.baseUrl = baseUrl;
+        // Remove trailing slash to avoid double slashes when appending paths
+        this.baseUrl = baseUrl != null && baseUrl.endsWith("/") ? baseUrl.substring(0, baseUrl.length() - 1) : baseUrl;
         this.httpClient = HttpClients.createDefault();
         this.gson = new Gson();
         this.random = new Random();

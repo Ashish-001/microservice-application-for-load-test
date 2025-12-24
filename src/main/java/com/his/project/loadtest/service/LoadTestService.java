@@ -30,6 +30,19 @@ public class LoadTestService {
         AtomicLong successfulRequests = new AtomicLong(0);
         AtomicLong failedRequests = new AtomicLong(0);
         
+        // Track requests per endpoint if requestsPerService is set
+        // Each endpoint gets the full amount (Product GET: 10k, Product POST: 10k, Inventory GET: 10k, Order POST: 10k)
+        Integer requestsPerService = config.getRequestsPerService();
+        AtomicLong productGetCount = new AtomicLong(0);
+        AtomicLong productPostCount = new AtomicLong(0);
+        AtomicLong inventoryGetCount = new AtomicLong(0);
+        AtomicLong orderPostCount = new AtomicLong(0);
+        
+        int productGetTarget = requestsPerService != null && config.isTestProductService() ? requestsPerService : Integer.MAX_VALUE;
+        int productPostTarget = requestsPerService != null && config.isTestProductService() ? requestsPerService : Integer.MAX_VALUE;
+        int inventoryTarget = requestsPerService != null && config.isTestInventoryService() ? requestsPerService : Integer.MAX_VALUE;
+        int orderTarget = requestsPerService != null && config.isTestOrderService() ? requestsPerService : Integer.MAX_VALUE;
+        
         List<Future<?>> futures = new ArrayList<>();
         
         // Create tasks for each thread
@@ -39,7 +52,7 @@ public class LoadTestService {
                 for (int j = 0; j < config.getRequestsPerThread(); j++) {
                     try {
                         // Test Product Service - GET
-                        if (config.isTestProductService()) {
+                        if (config.isTestProductService() && productGetCount.get() < productGetTarget) {
                             testEndpoint("GET /api/product", () -> {
                                 long start = System.currentTimeMillis();
                                 boolean success = apiClient.getProducts();
@@ -47,6 +60,7 @@ public class LoadTestService {
                                 synchronized (allResponseTimes) {
                                     allResponseTimes.add(responseTime);
                                 }
+                                productGetCount.incrementAndGet();
                                 updateStats(endpointStats, "GET /api/product", success, responseTime, 
                                     totalRequests, successfulRequests, failedRequests);
                                 return responseTime;
@@ -54,7 +68,7 @@ public class LoadTestService {
                         }
                         
                         // Test Product Service - POST
-                        if (config.isTestProductService()) {
+                        if (config.isTestProductService() && productPostCount.get() < productPostTarget) {
                             testEndpoint("POST /api/product", () -> {
                                 long start = System.currentTimeMillis();
                                 boolean success = apiClient.createProduct();
@@ -62,6 +76,7 @@ public class LoadTestService {
                                 synchronized (allResponseTimes) {
                                     allResponseTimes.add(responseTime);
                                 }
+                                productPostCount.incrementAndGet();
                                 updateStats(endpointStats, "POST /api/product", success, responseTime,
                                     totalRequests, successfulRequests, failedRequests);
                                 return responseTime;
@@ -69,7 +84,7 @@ public class LoadTestService {
                         }
                         
                         // Test Inventory Service - GET
-                        if (config.isTestInventoryService()) {
+                        if (config.isTestInventoryService() && inventoryGetCount.get() < inventoryTarget) {
                             testEndpoint("GET /api/inventory", () -> {
                                 long start = System.currentTimeMillis();
                                 boolean success = apiClient.checkInventory();
@@ -77,6 +92,7 @@ public class LoadTestService {
                                 synchronized (allResponseTimes) {
                                     allResponseTimes.add(responseTime);
                                 }
+                                inventoryGetCount.incrementAndGet();
                                 updateStats(endpointStats, "GET /api/inventory", success, responseTime,
                                     totalRequests, successfulRequests, failedRequests);
                                 return responseTime;
@@ -84,7 +100,7 @@ public class LoadTestService {
                         }
                         
                         // Test Order Service - POST
-                        if (config.isTestOrderService()) {
+                        if (config.isTestOrderService() && orderPostCount.get() < orderTarget) {
                             testEndpoint("POST /api/order", () -> {
                                 long start = System.currentTimeMillis();
                                 boolean success = apiClient.placeOrder();
@@ -92,10 +108,23 @@ public class LoadTestService {
                                 synchronized (allResponseTimes) {
                                     allResponseTimes.add(responseTime);
                                 }
+                                orderPostCount.incrementAndGet();
                                 updateStats(endpointStats, "POST /api/order", success, responseTime,
                                     totalRequests, successfulRequests, failedRequests);
                                 return responseTime;
                             });
+                        }
+                        
+                        // Check if all targets are reached
+                        if (requestsPerService != null) {
+                            boolean productGetDone = !config.isTestProductService() || productGetCount.get() >= productGetTarget;
+                            boolean productPostDone = !config.isTestProductService() || productPostCount.get() >= productPostTarget;
+                            boolean inventoryDone = !config.isTestInventoryService() || inventoryGetCount.get() >= inventoryTarget;
+                            boolean orderDone = !config.isTestOrderService() || orderPostCount.get() >= orderTarget;
+                            
+                            if (productGetDone && productPostDone && inventoryDone && orderDone) {
+                                break; // All targets reached
+                            }
                         }
                         
                         // Delay between requests

@@ -226,7 +226,7 @@ public class DemoDataLoader {
     }
     
     public static void main(String[] args) {
-        String baseUrl = args.length > 0 ? args[0] : "http://localhost:9000";
+        String baseUrl = args.length > 0 ? args[0] : "http://35.198.90.238:9000";
         DemoDataLoader loader = new DemoDataLoader(baseUrl);
         loader.loadDemoData();
     }
