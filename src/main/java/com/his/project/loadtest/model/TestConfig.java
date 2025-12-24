@@ -1,13 +1,14 @@
 package com.his.project.loadtest.model;
 
 public class TestConfig {
-    private String gatewayBaseUrl = "http://localhost:9000";
+    private String gatewayBaseUrl = "http://35.198.90.238:9000";
     private int threads = 10;
     private int requestsPerThread = 100;
     private long delayMs = 100;
     private boolean testProductService = true;
     private boolean testOrderService = true;
     private boolean testInventoryService = true;
+    private Integer requestsPerService = null; // If set, each service endpoint gets this many requests
     
     public String getGatewayBaseUrl() {
         return gatewayBaseUrl;
@@ -63,6 +64,14 @@ public class TestConfig {
     
     public void setTestInventoryService(boolean testInventoryService) {
         this.testInventoryService = testInventoryService;
+    }
+    
+    public Integer getRequestsPerService() {
+        return requestsPerService;
+    }
+    
+    public void setRequestsPerService(Integer requestsPerService) {
+        this.requestsPerService = requestsPerService;
     }
 }
 

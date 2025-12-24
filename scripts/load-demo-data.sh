@@ -3,7 +3,7 @@
 # Script to load demo data into microservices
 # Usage: ./scripts/load-demo-data.sh [API_GATEWAY_URL]
 
-API_GATEWAY_URL=${1:-http://localhost:9000}
+API_GATEWAY_URL=${1:-http://35.198.90.238:9000}
 
 echo "Loading demo data to: $API_GATEWAY_URL"
 echo ""
